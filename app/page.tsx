@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import TransactionForm from "@/components/TransactionForm";
 
 // Home is the main page rendered at "/"
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
         subtitle="Master your monetary matters."
         buttonText="Get Started"
       />
+      <TransactionForm />
     </>
   );
 }
