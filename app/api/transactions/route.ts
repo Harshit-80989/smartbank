@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
 
-// GET all transactions of logged-in user
 export async function GET() {
   const session = await auth();
 
@@ -10,27 +9,33 @@ export async function GET() {
     return NextResponse.json([], { status: 401 });
   }
 
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+
+  if (!user) return NextResponse.json([], { status: 404 });
+
   const transactions = await prisma.transaction.findMany({
-    where: {
-      user: {
-        email: session.user.email,
-      },
-    },
+    where: { user: { id: user.id } },
     orderBy: { date: "desc" },
   });
 
   return NextResponse.json(transactions);
 }
 
-// CREATE transaction
 export async function POST(req: Request) {
   const session = await auth();
 
   if (!session?.user?.email) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
   const body = await req.json();
@@ -42,27 +47,18 @@ export async function POST(req: Request) {
       category: body.category,
       description: body.description || "",
       date: new Date(body.date),
-
-      user: {
-        connect: {
-          email: session.user.email,
-        },
-      },
+      userId: user.id,
     },
   });
 
   return NextResponse.json(transaction, { status: 201 });
 }
 
-// DELETE transaction
 export async function DELETE(req: Request) {
   const session = await auth();
 
   if (!session?.user?.email) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { id } = await req.json();
