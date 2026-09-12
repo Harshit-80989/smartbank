@@ -1,16 +1,29 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { auth } from "../../../auth";
+import { auth } from "@/auth";
 
+// GET all transactions of logged-in user
 export async function GET() {
+  const session = await auth();
+
+  if (!session?.user?.email) {
+    return NextResponse.json([], { status: 401 });
+  }
+
   const transactions = await prisma.transaction.findMany({
+    where: {
+      user: {
+        email: session.user.email,
+      },
+    },
     orderBy: { date: "desc" },
   });
 
   return NextResponse.json(transactions);
 }
 
-export async function POST(request: NextRequest) {
+// CREATE transaction
+export async function POST(req: Request) {
   const session = await auth();
 
   if (!session?.user?.email) {
@@ -20,35 +33,28 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const body = await request.json();
-
-  const selectedDate = new Date(body.date);
-  const today = new Date();
-
-  // Allow today, reject future dates
-  today.setHours(23, 59, 59, 999);
-
-  if (selectedDate > today) {
-    return Response.json(
-      { error: "Future dates are not allowed" },
-      { status: 400 },
-    );
-  }
+  const body = await req.json();
 
   const transaction = await prisma.transaction.create({
-  data: {
-    amount: body.amount,
-    type: body.type,
-    category: body.category,
-    description: body.description || "", // allow empty note for income
-    date: new Date(body.date),
-    userId: session.user.id,
-  },
-});
+    data: {
+      amount: body.amount,
+      type: body.type,
+      category: body.category,
+      description: body.description || "",
+      date: new Date(body.date),
+
+      user: {
+        connect: {
+          email: session.user.email,
+        },
+      },
+    },
+  });
 
   return NextResponse.json(transaction, { status: 201 });
 }
 
+// DELETE transaction
 export async function DELETE(req: Request) {
   const session = await auth();
 
