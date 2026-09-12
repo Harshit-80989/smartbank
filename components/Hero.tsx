@@ -1,18 +1,23 @@
-interface HeroProps { //interface is used for defining the shape of props that the Hero component will accept
-    title: string,
-    subtitle: string,
-    buttonText: string,
+interface HeroProps {
+  title: string;
+  subtitle: string;
+  buttonText: string;
 }
-//mt stands for margin-top.
-import Button from "./Button";
-export default function Hero({title, subtitle, buttonText} : HeroProps) {
-    return(
-        <>
-        <div className="flex flex-col items-center justify-center gap-6 mt-16">
-            <h1 className="font-sans text-5xl font-bold">{title}</h1>
-            <p className="font-serif text-4xl text-center max-w-md leading-tight">{subtitle}</p>
-            <Button text={buttonText} />
-        </div>  
-        </>
-    );
+
+export default function Hero({ title, subtitle, buttonText }: HeroProps) {
+  return (
+    <section className="flex flex-col items-center justify-center text-center py-16">
+      <div className="mb-4 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-1 text-sm text-blue-300">
+        Personal Finance Dashboard
+      </div>
+
+      <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-white">
+        {title}
+      </h1>
+
+      <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+        {subtitle}
+      </p>
+    </section>
+  );
 }

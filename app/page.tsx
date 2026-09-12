@@ -1,21 +1,30 @@
-import Navbar from "@/components/Navbar";
+import { auth } from "@/auth";
 import Hero from "@/components/Hero";
 import TransactionForm from "@/components/TransactionForm";
 
-// Home is the main page rendered at "/"
-export default function Home() {
-  return (
-    <>
-      {/* Reusable navigation bar */}
-      <Navbar buttonText="Login" />
+export default async function Home() {
+  const session = await auth();
 
-      {/* Hero section with dynamic content passed as props */}
+  return (
+    <main>
       <Hero
-        title="SmartBank"
-        subtitle="Master your monetary matters."
-        buttonText="Get Started"
+        title="Smart banking made simple"
+        subtitle="Track transactions, manage money, and stay in control from one secure place."
+        buttonText="Get started"
       />
-      <TransactionForm />
-    </>
+
+      {session ? (
+        <TransactionForm />
+      ) : (
+        <div className="mx-auto mt-10 max-w-md rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
+          <h2 className="text-xl font-semibold text-white">
+            Sign in to continue
+          </h2>
+          <p className="mt-2 text-slate-400">
+            Your transactions are stored securely in your account.
+          </p>
+        </div>
+      )}
+    </main>
   );
 }
