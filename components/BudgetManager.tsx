@@ -6,7 +6,6 @@ interface Budget {
   id: number;
   category: string;
   limit: number;
-  spent?: number;
 }
 
 interface Transaction {
@@ -14,8 +13,6 @@ interface Transaction {
   category: string;
   type: string;
 }
-
-const [transactions, setTransactions] = useState<Transaction[]>([]);
 
 const categories = [
   "Food",
@@ -30,7 +27,7 @@ export default function BudgetManager() {
   const [category, setCategory] = useState("Food");
   const [limit, setLimit] = useState("");
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const loadBudgets = async () => {
     const res = await fetch("/api/budgets");
@@ -39,7 +36,6 @@ export default function BudgetManager() {
     setBudgets(data);
   };
 
-  
   const loadTransactions = async () => {
     const res = await fetch("/api/transactions");
     if (!res.ok) return;
@@ -88,7 +84,9 @@ export default function BudgetManager() {
           className="rounded-xl border border-white/10 bg-slate-800 p-3 text-white"
         >
           {categories.map((c) => (
-            <option key={c}>{c}</option>
+            <option key={c} value={c}>
+              {c}
+            </option>
           ))}
         </select>
 
@@ -118,14 +116,17 @@ export default function BudgetManager() {
             )
             .reduce((sum, t) => sum + t.amount, 0);
 
-          const percentage = Math.min((spent / budget.limit) * 100, 100);
+          const percentage =
+            budget.limit === 0
+              ? 0
+              : Math.min((spent / budget.limit) * 100, 100);
 
           const barColor =
             percentage < 60
               ? "bg-green-500"
               : percentage < 90
-                ? "bg-yellow-500"
-                : "bg-red-500";
+              ? "bg-yellow-500"
+              : "bg-red-500";
 
           return (
             <div
