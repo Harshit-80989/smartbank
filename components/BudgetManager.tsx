@@ -102,9 +102,60 @@ export default function BudgetManager() {
       <button
         onClick={handleSave}
         className="mt-6 w-full rounded-xl bg-blue-600 py-3 font-semibold text-white hover:bg-blue-500"
+        
       >
         Save Budget
       </button>
+
+      <div className="mt-8 space-y-4">
+  {budgets.length === 0 ? (
+    <p className="text-center text-slate-400">
+      No budgets yet. Create your first budget above.
+    </p>
+  ) : (
+    budgets.map((budget) => {
+      const spent = transactions
+        .filter(
+          (t) =>
+            t.type === "expense" &&
+            t.category === budget.category
+        )
+        .reduce((sum, t) => sum + t.amount, 0);
+
+      const percentage = Math.min(
+        (spent / budget.limit) * 100,
+        100
+      );
+
+      return (
+        <div
+          key={budget.id}
+          className="rounded-2xl border border-white/10 bg-white/5 p-5"
+        >
+          <div className="mb-3 flex justify-between">
+            <h3 className="font-semibold text-white">
+              {budget.category}
+            </h3>
+            <span className="text-slate-300">
+              ₹{spent} / ₹{budget.limit}
+            </span>
+          </div>
+
+          <div className="h-3 w-full rounded-full bg-slate-700">
+            <div
+              className="h-full rounded-full bg-blue-500 transition-all"
+              style={{ width: `${percentage}%` }}
+            />
+          </div>
+
+          <p className="mt-2 text-xs text-slate-400">
+            {percentage.toFixed(0)}% used
+          </p>
+        </div>
+      );
+    })
+  )}
+</div>
 
       <div className="mt-8 space-y-4">
         {budgets.map((budget) => {
