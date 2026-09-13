@@ -9,6 +9,14 @@ interface Budget {
   spent?: number;
 }
 
+interface Transaction {
+  amount: number;
+  category: string;
+  type: string;
+}
+
+const [transactions, setTransactions] = useState<Transaction[]>([]);
+
 const categories = [
   "Food",
   "Transport",
@@ -31,6 +39,7 @@ export default function BudgetManager() {
     setBudgets(data);
   };
 
+  
   const loadTransactions = async () => {
     const res = await fetch("/api/transactions");
     if (!res.ok) return;
@@ -100,58 +109,61 @@ export default function BudgetManager() {
       </button>
 
       <div className="mt-8 space-y-4">
-  {budgets.map((budget) => {
-    const spent = transactions
-      .filter(
-        (t) =>
-          t.type === "expense" &&
-          t.category === budget.category
-      )
-      .reduce((sum, t) => sum + t.amount, 0);
+        {budgets.map((budget) => {
+          const spent = transactions
+            .filter(
+              (t) =>
+                t.type === "expense" &&
+                t.category === budget.category
+            )
+            .reduce((sum, t) => sum + t.amount, 0);
 
-    const percentage = Math.min(
-      (spent / budget.limit) * 100,
-      100
-    );
+          const percentage = Math.min((spent / budget.limit) * 100, 100);
 
-    const color =
-      percentage < 60
-        ? "bg-green-500"
-        : percentage < 90
-        ? "bg-yellow-500"
-        : "bg-red-500";
+          const barColor =
+            percentage < 60
+              ? "bg-green-500"
+              : percentage < 90
+                ? "bg-yellow-500"
+                : "bg-red-500";
 
-    return (
-      <div
-        key={budget.id}
-        className="rounded-2xl border border-white/10 bg-slate-800/60 p-4"
-      >
-        <div className="mb-2 flex justify-between">
-          <h3 className="font-semibold text-white">
-            {budget.category}
-          </h3>
+          return (
+            <div
+              key={budget.id}
+              className="rounded-2xl border border-white/10 bg-white/5 p-5"
+            >
+              <div className="mb-3 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-white">
+                  {budget.category}
+                </h3>
 
-          <span className="text-sm text-slate-300">
-            ₹{spent} / ₹{budget.limit}
-          </span>
-        </div>
+                <span className="text-sm text-slate-300">
+                  ₹{spent} / ₹{budget.limit}
+                </span>
+              </div>
 
-        <div className="h-3 overflow-hidden rounded-full bg-slate-700">
-          <div
-            className={`h-full ${color} transition-all duration-500`}
-            style={{ width: `${percentage}%` }}
-          />
-        </div>
+              <div className="h-3 w-full rounded-full bg-slate-700">
+                <div
+                  className={`h-full rounded-full ${barColor} transition-all duration-500`}
+                  style={{ width: `${percentage}%` }}
+                />
+              </div>
 
-        <p className="mt-2 text-xs text-slate-400">
-          {percentage >= 100
-            ? "Budget exceeded!"
-            : `${percentage.toFixed(0)}% used`}
-        </p>
+              <div className="mt-2 flex justify-between text-xs">
+                <span className="text-slate-400">
+                  {percentage.toFixed(0)}% used
+                </span>
+
+                {percentage >= 100 && (
+                  <span className="font-medium text-red-400">
+                    Budget exceeded!
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
-    );
-  })}
-</div>
     </div>
   );
 }
