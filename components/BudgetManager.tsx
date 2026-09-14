@@ -49,27 +49,30 @@ export default function BudgetManager() {
   }, []);
 
   const handleSave = async () => {
-    if (!limit) return;
+  if (!limit) return;
 
-    const res = await fetch("/api/budgets", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        category,
-        limit: Number(limit),
-      }),
-    });
+  const res = await fetch("/api/budgets", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      category,
+      limit: Number(limit),
+    }),
+  });
 
-    if (!res.ok) {
-      alert("Failed to save budget");
-      return;
-    }
+  const data = await res.json();
+  console.log("POST:", res.status, data);
 
-    setLimit("");
-    await loadBudgets();
-  };
+  if (!res.ok) {
+    alert(data.error || "Failed to save budget");
+    return;
+  }
+
+  setLimit("");
+  await loadBudgets();
+};
 
   return (
     <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">

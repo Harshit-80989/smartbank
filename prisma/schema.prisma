@@ -68,6 +68,7 @@ model Transaction {
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+
 model Budget {
   id       Int    @id @default(autoincrement())
   category String
@@ -75,4 +76,6 @@ model Budget {
 
   userId String
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
 }
