@@ -2,6 +2,12 @@
 
 A modern full-stack personal finance web application built with **Next.js 16, TypeScript, Prisma, PostgreSQL, and NextAuth**. SmartBank helps users track income and expenses, manage monthly budgets, automate recurring payments, and visualize spending through interactive analytics.
 
+## 🚀 Live Demo
+
+**Vercel:** https://smartbank-five.vercel.app/
+
+---
+
 ## ✨ Features
 
 * 🔐 Secure Google Authentication (NextAuth)
@@ -24,7 +30,7 @@ A modern full-stack personal finance web application built with **Next.js 16, Ty
 | Prisma ORM        | Database ORM          |
 | PostgreSQL (Neon) | Database              |
 | NextAuth          | Authentication        |
-| Recharts          | Analytics charts      |
+| Recharts          | Analytics Charts      |
 | Tailwind CSS      | Styling               |
 | Vercel            | Deployment            |
 
@@ -106,28 +112,28 @@ prisma/
 
 SmartBank automatically:
 
-1. Stores recurring bills.
-2. Checks for due payments.
-3. Creates an expense transaction.
-4. Moves the next due date forward (Weekly/Monthly).
+1. Stores recurring bills
+2. Detects due payments
+3. Creates expense transactions
+4. Updates the next due date (Weekly/Monthly)
 
 ## 📊 Budget Tracking
 
 * Create monthly spending limits
 * Edit budgets anytime
 * Color-coded progress bars
-* Track amount spent vs remaining budget
+* Track spent vs remaining budget
 
 ## 🌐 Deployment
 
-This project is deployed using **Vercel** with **Neon PostgreSQL**.
+* **Live App:** https://smartbank-five.vercel.app/
+* **Hosting:** Vercel
+* **Database:** Neon PostgreSQL
 
 ## 👨‍💻 Author
 
 **Harshit Gupta**
-
 B.Tech Computer Science & Engineering
-
 Babasaheb Bhimrao Ambedkar University, Lucknow
 
 ---
