@@ -28,6 +28,8 @@ export default function BudgetManager() {
   const [limit, setLimit] = useState("");
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [editingId, setEditingId] = useState<number | null>(null);
+const [editLimit, setEditLimit] = useState("");
 
   const loadBudgets = async () => {
     const res = await fetch("/api/budgets");
@@ -53,6 +55,24 @@ export default function BudgetManager() {
     loadTransactions();
   }, []);
 
+  const handleUpdate = async () => {
+  if (editingId === null || !editLimit) return;
+
+  await fetch("/api/budgets", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: editingId,
+      limit: Number(editLimit),
+    }),
+  });
+
+  setEditingId(null);
+  setEditLimit("");
+  loadBudgets();
+};
   const handleSave = async () => {
     if (!limit) return;
 
@@ -148,9 +168,39 @@ export default function BudgetManager() {
                     {budget.category}
                   </h3>
 
-                  <span className="text-sm text-slate-300">
-                    ₹{spent} / ₹{budget.limit}
-                  </span>
+                  <div className="text-right">
+  {editingId === budget.id ? (
+    <div className="flex items-center gap-2">
+      <input
+        type="number"
+        value={editLimit}
+        onChange={(e) => setEditLimit(e.target.value)}
+        className="w-24 rounded bg-slate-800 p-1 text-white"
+      />
+      <button
+        onClick={handleUpdate}
+        className="rounded bg-green-600 px-2 py-1 text-xs text-white"
+      >
+        Save
+      </button>
+    </div>
+  ) : (
+    <>
+      <p className="text-sm text-slate-300">
+        ₹{spent} / ₹{budget.limit}
+      </p>
+      <button
+        onClick={() => {
+          setEditingId(budget.id);
+          setEditLimit(String(budget.limit));
+        }}
+        className="text-xs text-blue-400 hover:text-blue-300"
+      >
+        Edit
+      </button>
+    </>
+  )}
+</div>
                 </div>
 
                 <div className="h-3 w-full rounded-full bg-slate-700">

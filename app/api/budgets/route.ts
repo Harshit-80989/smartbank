@@ -67,6 +67,25 @@ export async function POST(req: Request) {
   return NextResponse.json(budget, { status: 201 });
 }
 
+export async function PATCH(req: Request) {
+  const session = await auth();
+
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await req.json();
+
+  const updated = await prisma.budget.update({
+    where: { id: body.id },
+    data: {
+      limit: Number(body.limit),
+    },
+  });
+
+  return NextResponse.json(updated);
+}
+
 export async function PUT(req: Request) {
   const session = await auth();
 

@@ -1,9 +1,11 @@
 "use server";
 
-import { signOut, signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 
 export async function login() {
-  await signIn("google");
+  await signIn("google", {
+    redirectTo: "/",
+  });
 }
 
 export async function logout() {
