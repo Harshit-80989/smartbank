@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💳 SmartBank
 
-## Getting Started
+A modern full-stack personal finance web application built with **Next.js 16, TypeScript, Prisma, PostgreSQL, and NextAuth**. SmartBank helps users track income and expenses, manage monthly budgets, automate recurring payments, and visualize spending through interactive analytics.
 
-First, run the development server:
+## ✨ Features
+
+* 🔐 Secure Google Authentication (NextAuth)
+* 💰 Track Income & Expense Transactions
+* 📊 Real-time Balance Dashboard
+* 📈 Interactive Analytics (Pie & Bar Charts)
+* 🎯 Monthly Budget Management with Progress Bars
+* ✏️ Edit Existing Budgets
+* 🔁 Recurring Payments with Automatic Processing
+* 📱 Responsive Dark UI for Desktop & Mobile
+* ☁️ Deployed on Vercel with Neon PostgreSQL
+
+## 🛠️ Tech Stack
+
+| Technology        | Purpose               |
+| ----------------- | --------------------- |
+| Next.js 16        | Frontend & App Router |
+| TypeScript        | Type safety           |
+| React 19          | UI                    |
+| Prisma ORM        | Database ORM          |
+| PostgreSQL (Neon) | Database              |
+| NextAuth          | Authentication        |
+| Recharts          | Analytics charts      |
+| Tailwind CSS      | Styling               |
+| Vercel            | Deployment            |
+
+## 📸 Screenshots
+
+*Add screenshots of Dashboard, Budgets, and Analytics here.*
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/smartbank.git
+cd smartbank
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env` file:
+
+```env
+DATABASE_URL=your_neon_database_url
+
+AUTH_SECRET=your_secret
+
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+NEXTAUTH_URL=http://localhost:3000
+```
+
+### 4. Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+### 5. Run migrations
+
+```bash
+npx prisma migrate dev
+```
+
+### 6. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit **http://localhost:3000**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📂 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+app/
+ ├── api/
+ │    ├── auth/
+ │    ├── transactions/
+ │    ├── budgets/
+ │    └── recurring/
+ ├── budgets/
+ └── page.tsx
 
-## Learn More
+components/
+ ├── TransactionForm
+ ├── BalanceCard
+ ├── BudgetManager
+ ├── Analytics
+ └── RecurringManager
 
-To learn more about Next.js, take a look at the following resources:
+prisma/
+ └── schema.prisma
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔄 Recurring Payments
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+SmartBank automatically:
 
-## Deploy on Vercel
+1. Stores recurring bills.
+2. Checks for due payments.
+3. Creates an expense transaction.
+4. Moves the next due date forward (Weekly/Monthly).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📊 Budget Tracking
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Create monthly spending limits
+* Edit budgets anytime
+* Color-coded progress bars
+* Track amount spent vs remaining budget
+
+## 🌐 Deployment
+
+This project is deployed using **Vercel** with **Neon PostgreSQL**.
+
+## 👨‍💻 Author
+
+**Harshit Gupta**
+
+B.Tech Computer Science & Engineering
+
+Babasaheb Bhimrao Ambedkar University, Lucknow
+
+---
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
