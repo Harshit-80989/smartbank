@@ -28,9 +28,6 @@ A modern full-stack personal finance web application built with **Next.js 16, Ty
 | Tailwind CSS      | Styling               |
 | Vercel            | Deployment            |
 
-## 📸 Screenshots
-
-*Add screenshots of Dashboard, Budgets, and Analytics here.*
 
 ## 🚀 Getting Started
 
